@@ -7,6 +7,6 @@ namespace webapi.Models
         public HttpStatusCode StatusCode { get; set; }
         public bool IsSuccess { get; set; }
         public string? ErrorMessage { get; set; }
-        public T Response { get; set; } = new T();
+        public T Data { get; set; } = new T();
     }
 }
