@@ -15,7 +15,7 @@ namespace webapi.Entities.Repository
 
         public async Task<List<Holiday>> GetHolidays(bool isLunarDay)
         {
-            List<Holiday> result = await GetAll().Where(x => x.IsLunarHoliday == isLunarDay).ToListAsync();
+            List<Holiday> result = await GetAll().Where(x => x.IsLunarHoliday == isLunarDay && !x.IsDisabled).ToListAsync();
             return result;
         }
     }

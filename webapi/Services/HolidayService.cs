@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using webapi.Entities;
 using webapi.Entities.Dto;
@@ -14,6 +15,7 @@ namespace webapi.Services
         Task<HolidayDto> UpdateHoliday(UpdateHolidayModel request);
         Task<List<HolidayDto>> GetHolidays(GetHolidaysModel request);
         Task<HolidayDto> GetHoliday(int id);
+        Task<HolidayDto> GetHoliday(string url);
         Task<List<HolidayDto>> GetHolidays(bool isLunarDay);
         Task DeleteHoliday(int id);
     }
@@ -73,6 +75,12 @@ namespace webapi.Services
         public async Task<HolidayDto> GetHoliday(int id)
         {
             var holiday = await _holidayRepository.GetAsync(id);
+            return _mapper.Map<HolidayDto>(holiday);
+        }
+
+        public async Task<HolidayDto> GetHoliday(string url)
+        {
+            var holiday = await _holidayRepository.GetAll().FirstOrDefaultAsync(x => x.Url == url);
             return _mapper.Map<HolidayDto>(holiday);
         }
 

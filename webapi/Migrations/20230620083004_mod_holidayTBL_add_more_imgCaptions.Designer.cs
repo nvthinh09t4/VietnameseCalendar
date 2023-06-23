@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Entities;
 
@@ -10,9 +11,11 @@ using webapi.Entities;
 namespace webapi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230620083004_mod_holidayTBL_add_more_imgCaptions")]
+    partial class mod_holidayTBL_add_more_imgCaptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -86,9 +89,6 @@ namespace webapi.Migrations
 
                     b.Property<string>("ImgUrl5")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDisabled")
-                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsImportant")
                         .HasColumnType("INTEGER");
