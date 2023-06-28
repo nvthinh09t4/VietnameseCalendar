@@ -16,6 +16,8 @@ namespace webapi
             CreateMap<HolidayDto, Holiday>()
                 .ForMember(dest => dest.ReferenceLinks,
                             opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.ReferenceLinks)));
+
+            CreateMap<TrackingInfor, TrackingInforDto>().ReverseMap();
         }
     }
 }

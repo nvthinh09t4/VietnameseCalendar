@@ -119,5 +119,6 @@ namespace webapi.Entities
         }
 
         public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<TrackingInfor> TrackingInfors { get; set; }
     }
 }
