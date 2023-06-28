@@ -31,8 +31,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(mfc => mfc.AddProfile(new AutoMapperProfile()));
 
 builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
+builder.Services.AddScoped<ITrackingInforRepository, TrackingInforRepository>();
 
 builder.Services.AddScoped<IHolidayService, HolidayService>();
+builder.Services.AddScoped<ITrackingInforService, TrackingInforService>();
 
 builder.Services.AddTransient<ICalendarService, CalendarService>();
 
