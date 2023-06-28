@@ -40,10 +40,17 @@ var app = builder.Build();
 app.UseRateLimiter();
 app.UseCors(builder =>
 {
+#if DEBUG
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
+#else
     builder.WithOrigins("http://ngayamlich.vn", "http://ngayamlich.online")
            .AllowAnyMethod()
            .AllowAnyHeader()
            .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
+#endif
 });
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

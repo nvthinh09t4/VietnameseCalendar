@@ -34,6 +34,7 @@ namespace webapi.Controllers
                 return NotFound();
             }
             var holiday = await _holidayService.GetHolidays(isLunarDay);
+            holiday = holiday.OrderBy(x => x.Month).ThenBy(x => x.Day).ToList();
 
             if (holiday == null)
             {
@@ -52,6 +53,23 @@ namespace webapi.Controllers
                 return NotFound();
             }
             var holiday = await _holidayService.GetHoliday(id);
+
+            if (holiday == null)
+            {
+                return NotFound();
+            }
+
+            return holiday;
+        }
+
+        [HttpGet("/ByUrl/{url}")]
+        public async Task<ActionResult<HolidayDto>> GetHoliday(string url)
+        {
+            if (_context.Holidays == null)
+            {
+                return NotFound();
+            }
+            var holiday = await _holidayService.GetHoliday(url);
 
             if (holiday == null)
             {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Entities;
 
@@ -10,9 +11,11 @@ using webapi.Entities;
 namespace webapi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230620082626_mod_holidayTBL_add_more_description_and_imgUrl")]
+    partial class mod_holidayTBL_add_more_description_and_imgUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -54,21 +57,6 @@ namespace webapi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImgCaption1")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImgCaption2")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImgCaption3")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImgCaption4")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImgCaption5")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ImgUrl")
                         .HasColumnType("TEXT");
 
@@ -86,9 +74,6 @@ namespace webapi.Migrations
 
                     b.Property<string>("ImgUrl5")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDisabled")
-                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsImportant")
                         .HasColumnType("INTEGER");
