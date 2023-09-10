@@ -119,9 +119,10 @@ namespace webapi.Services
         {
             var calendar = new ChineseLunisolarCalendar();
             var currLunarMonth = calendar.GetMonth(currDate);
+            year = calendar.GetYear(currDate);
             var leapMonth = calendar.GetLeapMonth(year);
             var lunarInDate = calendar.GetDayOfMonth(currDate);
-            var lunarInMonth = currLunarMonth < leapMonth ? currLunarMonth : currLunarMonth - 1;
+            var lunarInMonth = leapMonth == 0 ? currLunarMonth : (currLunarMonth < leapMonth ? currLunarMonth : currLunarMonth - 1);
             var lunarInYear = calendar.GetYear(currDate);
             Calendar cal = new CultureInfo("vi-VN").Calendar;
             var weekIndex = cal.GetWeekOfYear(currDate, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
