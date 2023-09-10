@@ -7,7 +7,7 @@ namespace webapi.Services
     {
         LunarMonth GetLunarMonth(int month, int year);
         LunarDate ToLunarDay(int dd, int mm, int yyyy);
-        LunarDate ToGregoryDay(int dd, int mm, int yyyy);
+        string ToGregoryDay(int dd, int mm, int yyyy);
     }
 
     public class CalendarService : ICalendarService
@@ -18,6 +18,12 @@ namespace webapi.Services
         DateTime NgayNeo = new DateTime(2023, 5, 2);
         string[] CanNgay = { "Canh", "Tân", "Nhâm", "Quý", "Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ" };
         string[] ChiNgay = { "Thân", "Dậu", "Tuất", "Hợi", "Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi" };
+        private IKhongMinhHoroscopeCalendarService _khongMinhCalendar;
+
+        public CalendarService(IKhongMinhHoroscopeCalendarService khongMinhCalendar)
+        {
+            _khongMinhCalendar = khongMinhCalendar;
+        }
 
         public LunarMonth GetLunarMonth(int month, int year)
         {
@@ -84,26 +90,43 @@ namespace webapi.Services
             };
         }
 
-        public LunarDate ToGregoryDay(int dd, int mm, int yyyy)
+        public string ToGregoryDay(int dd, int mm, int yyyy)
         {
-            throw new NotImplementedException();
+            var calendar = new ChineseLunisolarCalendar();
+            var gregorianCal = new GregorianCalendar();
+
+            try
+            {
+                DateTime lunarDate = calendar.ToDateTime(yyyy, month: mm, day: dd, /*hms:*/ 0, 0, 0, 0);
+                Int32 year = gregorianCal.GetYear(lunarDate);
+                Int32 month = gregorianCal.GetMonth(lunarDate);
+                Int32 day = gregorianCal.GetDayOfMonth(lunarDate);
+                return $"{day}/{month}/{year}";
+            }
+            catch (Exception ex)
+            {
+                return "Ngày không đúng định dạng";
+            }
+            
         }
 
         public LunarDate ToLunarDay(int dd, int mm, int yyyy)
         {
-            throw new NotImplementedException();
+            return GetLunarDate(new DateTime(yyyy, mm, dd), mm, yyyy, false);
         }
 
         LunarDate GetLunarDate(DateTime currDate, int month, int year, bool isActiveDay)
         {
             var calendar = new ChineseLunisolarCalendar();
             var currLunarMonth = calendar.GetMonth(currDate);
+            year = calendar.GetYear(currDate);
             var leapMonth = calendar.GetLeapMonth(year);
             var lunarInDate = calendar.GetDayOfMonth(currDate);
-            var lunarInMonth = currLunarMonth < leapMonth ? currLunarMonth : currLunarMonth - 1;
+            var lunarInMonth = leapMonth == 0 ? currLunarMonth : (currLunarMonth < leapMonth ? currLunarMonth : currLunarMonth - 1);
             var lunarInYear = calendar.GetYear(currDate);
             Calendar cal = new CultureInfo("vi-VN").Calendar;
             var weekIndex = cal.GetWeekOfYear(currDate, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+            var ngayCanChi = GetCanChiNgay(currDate);
             return new LunarDate
             {
                 GregoryDate = currDate,
@@ -112,10 +135,13 @@ namespace webapi.Services
                 LunarInYear = lunarInYear,
                 SexagenaryYear = $"{Can[lunarInYear % 10]} {Chi[lunarInYear % 12]}",
                 SexagenaryMonth = GetCanChiThang(lunarInYear, lunarInMonth),
-                SexagenaryDate = GetCanChiNgay(currDate),
+                SexagenaryDate = ngayCanChi,
+                Can = ngayCanChi.Split(' ')[0],
+                Chi = ngayCanChi.Split(' ')[1],
                 IsActiveDay = isActiveDay,
                 WeekIndex = weekIndex,
-                IsToday = currDate.Date == DateTime.Today
+                IsToday = currDate.Date == DateTime.Today,
+                KhongMinhHoroscopeInformation = _khongMinhCalendar.ToHoloscopeDate(lunarInMonth, lunarInDate)
             };
         }
 

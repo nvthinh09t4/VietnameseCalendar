@@ -37,6 +37,7 @@ builder.Services.AddScoped<IHolidayService, HolidayService>();
 builder.Services.AddScoped<ITrackingInforService, TrackingInforService>();
 
 builder.Services.AddTransient<ICalendarService, CalendarService>();
+builder.Services.AddTransient<IKhongMinhHoroscopeCalendarService, KhongMinhCalendar>();
 
 var app = builder.Build();
 app.UseRateLimiter();

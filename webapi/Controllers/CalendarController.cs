@@ -79,6 +79,29 @@ namespace webapi.Controllers
             }
         }
 
-        
+        [HttpGet("ToGregoryDate")]
+        public BaseResponse<string> ToGregoryDay(int dd, int mm, int yyyy)
+        {
+            try
+            {
+                var output = _calendarService.ToGregoryDay(dd, mm, yyyy);
+                return new BaseResponse<string>
+                {
+                    ErrorMessage = "",
+                    IsSuccess = output != "Ngày không đúng định dạng",
+                    StatusCode = output != "Ngày không đúng định dạng" ? HttpStatusCode.OK : HttpStatusCode.BadRequest,
+                    Data = output
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<string>
+                {
+                    ErrorMessage = ex.Message,
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                };
+            }
+        }
     }
 }
